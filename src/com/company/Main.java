@@ -2,6 +2,7 @@ package com.company;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
@@ -11,10 +12,15 @@ public class Main {
     public static final String inputFile = "input.txt";
     //An array of points
     public static Point[] points;
+    //The x-sorted array
+    public static Point[] xSorted;
+    //The y-sorted array
+    public static Point[] ySorted;
 
     public static void main(String[] args) {
         fileInput();
         printArray();
+        prepToSortArrays();
     }
 
     //Reads input file and creates the point array
@@ -58,5 +64,28 @@ public class Main {
         for(Point p: points) {
             p.printMe();
         }
+    }
+
+    //Sets up both x and y arrays to be sorted
+    public static void prepToSortArrays() {
+        //Initializes x and y
+        xSorted = new Point[points.length];
+        ySorted = new Point[points.length];
+        //Copies all elements of points to x and y arrays
+        int i = 0;
+        for(Point p: points) {
+            xSorted[i] = p;
+            ySorted[i++] = p;
+        }
+    }
+
+    //Sorts the x-array
+    public static void sortX() {
+
+    }
+
+    //Sorts the y-array
+    public static void sortY() {
+
     }
 }
