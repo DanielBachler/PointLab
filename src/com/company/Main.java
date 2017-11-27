@@ -19,8 +19,12 @@ public class Main {
 
     public static void main(String[] args) {
         fileInput();
-        printArray();
+        //printArray(points);
         prepToSortArrays();
+        sortX(points, 0, points.length, xSorted);
+        printArray(xSorted);
+        sortY(points, 0, points.length, ySorted);
+        printArray(ySorted);
     }
 
     //Reads input file and creates the point array
@@ -60,10 +64,11 @@ public class Main {
     }
 
     //Prints each point in the point array
-    public static void printArray() {
-        for(Point p: points) {
+    public static void printArray(Point[] printMe) {
+        for(Point p: printMe) {
             p.printMe();
         }
+        System.out.println();
     }
 
     //Sets up both x and y arrays to be sorted
@@ -80,12 +85,60 @@ public class Main {
     }
 
     //Sorts the x-array
-    public static void sortX() {
+    public static void sortX(Point[] points, int start, int stop, Point[] xArray) {
+        //Checks that run length is more than 1
+        if(stop - start < 2) {
+            return;
+        }
+        int middle = (start + stop) / 2;
+        sortX(xArray, start, middle, points);
+        sortX(xArray, middle, stop, points);
 
+        mergeX(xArray, start, middle, stop, points);
     }
 
-    //Sorts the y-array
-    public static void sortY() {
+    //Merge sort for X
+    public static void mergeX(Point[] xArray, int start, int middle, int stop, Point[] points) {
+        int i = start;
+        int j = middle;
 
+        for(int k = start; k < stop; k++) {
+            if(i < middle && (j >= stop || points[i].x <= points[j].x)) {
+                xArray[k] = points[i];
+                i++;
+            } else {
+                xArray[k] = points[j];
+                j++;
+            }
+        }
+    }
+
+    //Splits y-array up for sorting
+    public static void sortY(Point[] points, int start, int stop, Point[] yArray) {
+        //Checks that run length is more than 1
+        if(stop - start < 2) {
+            return;
+        }
+        int middle = (start + stop) / 2;
+        sortY(yArray, start, middle, points);
+        sortY(yArray, middle, stop, points);
+
+        mergeY(yArray, start, middle, stop, points);
+    }
+
+    //Merge sort for Y
+    public static void mergeY(Point[] yArray, int start, int middle, int stop, Point[] points) {
+        int i = start;
+        int j = middle;
+
+        for(int k = start; k < stop; k++) {
+            if(i < middle && (j >= stop || points[i].y <= points[j].y)) {
+                yArray[k] = points[i];
+                i++;
+            } else {
+                yArray[k] = points[j];
+                j++;
+            }
+        }
     }
 }
