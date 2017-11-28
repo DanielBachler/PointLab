@@ -1,10 +1,11 @@
 package com.company;
 
 public class Point {
-    float x;
-    float y;
+    double x;
+    double y;
+    int spot;
 
-    public Point(float x, float y) {
+    public Point(double x, double y) {
         this.x = x;
         this.y = y;
     }
