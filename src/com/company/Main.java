@@ -37,21 +37,21 @@ public class Main {
             File input = new File(inputFile);
             Scanner inputReader = new Scanner(input);
             //Creates a temp linked list for holding points, and a counter var
-            LinkedList<Point> temp = new LinkedList<>();
-            int numPoints = 0;
+            LinkedList<Point> temp = new LinkedList<>(); // creates linked list of points
+            int numPoints = 0; // starts as 0
             //Iterates until no points remain in input
-            while (inputReader.hasNextLine()) {
+            while (inputReader.hasNextLine()) { // loops that goes through lines
                 //Gets the next line and creates a tokenizer that breaks on commas
                 String line = inputReader.nextLine();
-                StringTokenizer tokenizer = new StringTokenizer(line, ",");
+                StringTokenizer tokenizer = new StringTokenizer(line, ","); // breaks at commas
                 //Creates an x and y value string
                 String xString = tokenizer.nextToken();
                 String yString = tokenizer.nextToken();
                 //Parses the x and y doubles from each string
-                double x = Double.parseDouble(xString);
+                double x = Double.parseDouble(xString); // parses string to double
                 double y = Double.parseDouble(yString);
                 //Creates a new point, adds it to the linked list and increments the counter
-                Point point = new Point(x, y);
+                Point point = new Point(x, y); // send to point class
                 temp.add(point);
                 numPoints++;
             }
@@ -61,13 +61,13 @@ public class Main {
             for (int i = 0; i < numPoints; i++) {
                 points[i] = temp.get(i);
             }
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) { // makes sure files recieved
             System.out.println("File not found");
         }
     }
 
     //Prints each point in the point array
-    public static void printArray(Point[] printMe) {
+    public static void printArray(Point[] printMe) { // simple print method
         for (Point p : printMe) {
             p.printMe();
         }
@@ -94,7 +94,7 @@ public class Main {
             return;
         }
         int middle = (start + stop) / 2;
-        sortX(xArray, start, middle, points);
+        sortX(xArray, start, middle, points); //recursice calls to sort by x values
         sortX(xArray, middle, stop, points);
 
         mergeX(xArray, start, middle, stop, points);
@@ -106,7 +106,7 @@ public class Main {
         int j = middle;
 
         for (int k = start; k < stop; k++) {
-            if (i < middle && (j >= stop || points[i].x <= points[j].x)) {
+            if (i < middle && (j >= stop || points[i].x <= points[j].x)) { //compares iteraters with the given middle and stop
                 xArray[k] = points[i];
                 i++;
             } else {
@@ -152,58 +152,59 @@ public class Main {
         }
     }
 
+    //Finds smallest value
     public static double recursion(Point[] points, double distance) {
         try {
             System.out.printf("Solving problem: Point[%d]...Point[%d]\n", points[0].spot, points[points.length - 1].spot);
         } catch (NullPointerException e) {
             System.out.printf("Solving problem: Point[%d]...Point[%d]\n", points[0].spot, points[0].spot);
         }
-        Point[] pL = new Point[(int)Math.ceil((points.length) / 2.0)];
+        Point[] pL = new Point[(int)Math.ceil((points.length) / 2.0)]; //splits array into half
         Point[] pR = new Point[(int)Math.ceil((points.length) / 2.0)];
         double lDist;
         double rDist;
         double minDist = distance;
 
 
-        for (int i = 0; i < points.length / 2; i++) {
+        for (int i = 0; i < points.length / 2; i++) { //gives value to pL
             pL[i] = points[i];
         }
-        for (int i = (points.length / 2), j = 0; i < points.length; i++, j++) {
+        for (int i = (points.length / 2), j = 0; i < points.length; i++, j++) { //gives values to pR
             pR[j] = points[i];
         }
-        if (pL.length == 2) {
+        if (pL.length == 2) { //if the arrays are down to size two then we calculate distances
             double distL;
             double distR;
             //finds distance for pL
-            if(pL[0] != null && pL[1] != null) {
+            if(pL[0] != null && pL[1] != null) { //if no null vaue then it calculates and prints step
                 distL = Math.sqrt( Math.pow((pL[0].x - pL[1].x), 2) + Math.pow((pL[0].y - pL[1].y), 2));
                 System.out.printf("\tFound Result: P1: (%.1f, %.1f), P2: (%.1f, %.1f), Distance: %.1f\n", pL[0].x, pL[0].y, pL[1].x, pL[1].y, distL);
-            } else {
+            } else { //if ther is null it sets it to max
                 distL = Double.MAX_VALUE;
                 System.out.printf("\tFound Result: P1: (%.1f, %.1f), P2: (%.1f, %.1f), Distance: INF\n", pL[0].x, pL[0].y, pL[0].x, pL[0].y);
             }
             //Finds distance for pR
-            if(pR[0] != null && pR[1] != null) {
+            if(pR[0] != null && pR[1] != null) { //if no null value then it calculates and prints step
                 distR = Math.sqrt( Math.pow((pR[0].x - pR[1].x), 2) + Math.pow((pR[0].y - pR[1].y), 2));
                 System.out.printf("\tFound Result: P1: (%.1f, %.1f), P2: (%.1f, %.1f), Distance: %.1f\n", pR[0].x, pR[0].y, pR[1].x, pR[1].y, distR);
-            } else {
+            } else { //if ther is null it sets it to max
                 distR = Double.MAX_VALUE;
                 System.out.printf("\tFound Result: P1: (%.1f, %.1f), P2: (%.1f, %.1f), Distance: INF\n", pR[0].x, pR[0].y, pR[0].x, pR[0].y);
             }
             //Compares distR, distL and minDist
-            double temp = Math.min(distR, distL);
-            minDist = Math.min(temp, minDist);
-            try {
+            double temp = Math.min(distR, distL); // finds minimum out of two
+            minDist = Math.min(temp, minDist); // checks if found min is smaller than current min
+            try { //tests for null pointer excpetion
                 System.out.printf("Combining Problems: Point[%d]...Point[%d] and Point[%d]...Point[%d]\n\tFound Result, distance: %.1f\n", pL[0].spot, pL[1].spot, pR[0].spot, pR[1].spot, minDist);
             } catch (NullPointerException e) {
                 System.out.printf("Combining Problems with a duplicate\n\tFound Result, Distance: %.1f\n", minDist);
             }
             return minDist;
-        } else {
-            System.out.printf("\tDividing at Point[%d]\n", (int)Math.ceil((points.length) / 2.0));
-            minDist = recursion(pL, minDist);
-            minDist = recursion(pR, minDist);
-            return minDist;
+        } else { // if array is more tyhan 2 it calls the method again
+            System.out.printf("\tDividing at Point[%d]\n", (int)Math.ceil((points.length) / 2.0)); // step print
+            minDist = recursion(pL, minDist); // left side first
+            minDist = recursion(pR, minDist); // then right side
+            return minDist; // gives min distqnce found
         }
     }
 
